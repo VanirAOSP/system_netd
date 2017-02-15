@@ -35,21 +35,17 @@ public:
     SoftapController();
     virtual ~SoftapController();
 
-#ifdef LIBWPA_CLIENT_EXISTS
-    int startSoftap(bool global_ctrl_iface, SocketClient *socketClient);
-#else
-    int startSoftap(bool global_ctrl_iface = false);
-#endif
+    int startSoftap(bool global_ctrl_iface = false, SocketClient *socketClient = NULL, const char *iface = NULL);
     int stopSoftap();
     bool isSoftapStarted();
     int setSoftap(int argc, char *argv[]);
     int fwReloadSoftap(int argc, char *argv[]);
 private:
+    SocketClient *mSocketClient;
 #ifdef LIBWPA_CLIENT_EXISTS
     pthread_t mThread;
     int mThreadErr;
     bool mHostapdFlag;
-    SocketClient *mSocketClient;
 #endif
     pid_t mPid;
     bool generatePsk(char *ssid, char *passphrase, char *psk);
